@@ -1,1 +1,1 @@
-json.array! @tasks, partial: "tasks/task", as: :task
+ssjson.array! @tasks, partial: "tasks/task", as: :task
