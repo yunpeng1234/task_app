@@ -3,6 +3,15 @@ class TasksController < ApplicationController
 
   # GET /tasks
   # GET /tasks.json
+  def search
+    if params[:search].blank?  
+      redirect_to(root_path, alert: "Empty field!") and return  
+    else  
+      @parameter = params[:search].downcase  
+      @results = Task.all.where("lower(name) LIKE :search", search: "%#{@parameter}%")  
+    end   
+  end
+
   def index
     @tasks = Task.all
   end
@@ -42,7 +51,7 @@ class TasksController < ApplicationController
   def update
     respond_to do |format|
       if @task.update(task_params)
-        format.html { redirect_to @task, notice: 'Task was successfully updated.' }
+        format.html { redirect_to @task, notice: 'Removed.' }
         format.json { render :show, status: :ok, location: @task }
       else
         format.html { render :edit }
@@ -69,6 +78,6 @@ class TasksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.require(:task).permit(:task, :date, :description)
+      params.require(:task).permit(:task, :date, :category, :description)
     end
 end
